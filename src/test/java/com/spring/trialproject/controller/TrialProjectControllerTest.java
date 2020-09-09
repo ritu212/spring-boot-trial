@@ -26,6 +26,7 @@ import org.springframework.web.context.WebApplicationContext;
 
 import static org.hamcrest.Matchers.any;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -76,7 +77,7 @@ class TrialProjectControllerTest {
     public void testAddUserWithStatus200() throws Exception {
         String body = objectMapper.writeValueAsString(userDto);
         String response = objectMapper.writeValueAsString(user);
-        when(userService.saveUserDetails(modelMapper.map(userDto, User.class))).thenReturn(user);
+        given(userService.saveUserDetails(modelMapper.map(userDto, User.class))).willAnswer(x->x.getArgument(0));
         mockMvc.perform(post("/addUser")
                         .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON)
